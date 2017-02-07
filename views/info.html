@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DemoApp">
+<head>
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>索引请求</title>
+    <link href="http://127.0.0.1:8081/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://127.0.0.1:8081/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('DemoApp', ['ngRoute']);
+
+        // function demoRouteConfig($routeProvider) {
+        //   $routeProvider.when('/', {
+        //     controller:  'ListController',
+        //     templateUrl: './list.html'
+        //   }).when('/view/:id', {
+        //     controller:  'DetailController',
+        //     templateUrl: './detail.html'
+        //   }).otherwise({
+        //     redirectTo:  '/'
+        //   });
+        // };
+
+        app.config(function($routeProvider) {
+          $routeProvider
+            .when('/user', {
+              template: '<h2>快就收到回复即可顺利的恢复健康</h2>'
+            })
+            .when('/artical', {
+              template: '<h2>快就收到回复即可顺利的恢复健康</h2>'
+            })
+            .when('setting', {
+              template: '<h2>快就收到回复即可顺利的恢复健康</h2>'
+            })
+        });
+
+        app.controller('ctrl1', function($scope) {
+
+        });
+
+        // var studentList = [{ id: 0, name: '张三', sex: '男', age: 18 },
+        //   { id: 1, name: '李四', sex: '女', age: 15 },
+        //   { id: 2, name: '王五', sex: '男', age: 16 }
+        // ];
+
+        // app.config(demoRouteConfig);
+
+        // app.controller('LoginController', function ($scope, $http, $location) {
+        //     $scope.submit = function () {
+        //         login($scope.username, $scope.password);
+        //     };
+        //
+        //     function login(username, password) {
+        //         $http({
+        //             url: '/login',
+        //             method: 'post',
+        //             data: 'username=' + username + '&password=' + password,
+        //             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        //         }).then(function onSuccess(response) {
+        //             if (response.data == 'success') {
+        //                 window.location.href = 'http://localhost:8080/index';
+        //             }
+        //         }).catch(function onError(response) {
+        //             alert('失败了')
+        //         })
+        //     };
+        // });
+
+        // app.controller('DetailController', function($scope, $routeParams) {
+        //   alert($routeParams.id);
+        //   $routeParams.student = studentList[$routeParams.id];
+        // });
+        //
+        // app.controller('ListController', function($scope) {
+        //   alert(studentList);
+        //   $scope.studentList = studentList;
+        // });
+    </script>
+</head>
+<body style="padding: 20px;" ng-controller="ctrl1">
+  <a href="#/user">用户中心</a>
+  <a href="#/artical">文章列表</a>
+  <a href="#/setting">配置信息</a>
+  <!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-view> -->
+  <ng-view></ng-view>
+
+  </div>
+</body>
+</html>

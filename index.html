@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DemoApp">
+<head>
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>索引请求</title>
+    <link href="http://127.0.0.1:8081/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://127.0.0.1:8081/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('DemoApp', ['ngRoute']);
+
+        function demoRouteConfig($routeProvider) {
+          $routeProvider
+            .when('/', {
+              controller: 'LoginController',
+              templateUrl: './login.html'
+            })
+            .when('/list', {
+              controller:  'ListController',
+              templateUrl: './list.html'
+            })
+            .when('/view/:id', {
+              controller:  'DetailController',
+              templateUrl: './detail.html'
+            }).otherwise({
+              redirectTo:  '/'
+            });
+        };
+
+        app.config(demoRouteConfig);
+
+        app.controller('LoginController', function ($scope, $http, $location, $httpParamSerializerJQLike) {
+            $scope.submit = function () {
+                login($scope.username, $scope.password);
+            };
+
+            function login(username, password) {
+                $http({
+                    url: 'http://127.0.0.1:8080/sys/login',
+                    method: 'post',
+                    data: $httpParamSerializerJQLike({
+                      username: username,
+                      password: password
+                    }),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function(res) {
+                  if (res.data == 'success') {
+                    $location.path('/list');
+                  }
+                }).error(function(res) {
+                  alert('失败');
+                });
+            };
+
+        });
+
+        app.controller('DetailController', function($scope, $http, $routeParams) {
+          $http.get('http://127.0.0.1:8080/user/detail/' + $routeParams.id).success(function(res) {
+            $scope.student = res;
+          }).error(function(res) {
+            alert('失败');
+          });
+        });
+
+        app.controller('ListController', function($scope, $http) {
+          $http.get('http://127.0.0.1:8080/user/list').success(function(res) {
+            $scope.studentList = res;
+          }).error(function(res) {
+            alert('失败')
+          });
+        });
+    </script>
+</head>
+<body style="padding: 20px;">
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-view>
+
+  </div>
+</body>
+</html>

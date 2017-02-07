@@ -1,0 +1,42 @@
+<div data-ng-controller="ListController">
+  <table id="example" class="display" cellspacing="0" width="100%">
+      <thead>
+          <tr>
+            <th>序号</th>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+          </tr>
+      </thead>
+      <tfoot>
+          <tr>
+            <th>序号</th>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+          </tr>
+      </tfoot>
+  </table>
+</div>
+<script type="text/javascript">
+  TableDatatablesManaged.init();
+</script>
+
+<!-- <div data-ng-controller="ListController">
+  <table class="table">
+    <tr>
+      <th>学号</th>
+      <th>姓名</th>
+      <th>性别</th>
+      <th>年龄</th>
+    </tr>
+    <tr ng-repeat="student in studentList">
+      <td>{{student.id}}</td>
+      <td><a ui-sref="view({id: {{student.id}}})">{{student.name}}</a></td>
+      <td>{{student.sex}}</td>
+      <td>{{student.age}}</td>
+    </tr>
+  </table>
+</div> -->

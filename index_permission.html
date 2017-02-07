@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DemoApp">
+<head>
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>索引请求</title>
+    <link href="http://127.0.0.1:8081/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://127.0.0.1:8081/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8081/js/angular-route.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('DemoApp', ['ngRoute']);
+
+        var routeForUnauthorizedAccess = '/SomeAngularRouteForUnauthorizedAccess';
+
+        app.factory('authorizationService', function($q, $location, $rootScope) {
+          var roles = {
+            superUser: 0,
+            admin: 1,
+            user: 2
+          };
+
+          return {
+            permissionModel: {
+              permissions: [],
+              isPermissionLoaded: false
+            },
+
+            permissionCheck: function(roleCollection) {
+              var deferred = $q.defer();
+
+              // var parentPointer = this;
+              //
+              // if (this.permissionModel.isPermissionLoaded) {
+              //   this.getPermission(this.permissionModel, roleCollection, deferred);
+              // } else {
+              //   $resource('/sys/permissions').get().$promise.then(function(response) {
+              //     // 获取所有的权限并且初始化 eg: [admin, superUser, user]
+              //     parentPointer.permissionModel.permissions = response;
+              //     parentPointer.permissionModel.isPermissionLoaded = true;
+              //     parentPointer.getPermission(parentPointer.permissionModel, roleCollection, deferred);
+              //   });
+              // }
+
+              // deferred.resolve();
+              $location.path(routeForUnauthorizedAccess);
+
+              $rootScope.$on('$locationChangeSuccess', function(next, current) {
+                deferred.resolve();
+              });
+
+              return deferred.promise;
+            },
+
+            getPermission: function(permissionModel, roleCollection, deferred) {
+              var ifPermissionPassed = false;
+              var permissions = permissionModel.permissions;
+              // 判断roleCollection中的role是否在permissions中
+              angular.forEach(roleCollection, function(role) {
+                if (permissions.contains(role)) {
+
+                }
+              });
+
+              if (ifPermissionPassed) {
+                // do nothing
+                deferred.resolve();
+              } else {
+                $location.path(routeForUnauthorizedAccess);
+
+                $rootScope.on('$locationChangeSuccess', function(next, current) {
+                  deferred.resolve();
+                });
+              }
+            }
+          }
+        });
+
+        function demoRouteConfig($routeProvider) {
+          $routeProvider
+            .when('/', {
+              controller: 'LoginController',
+              templateUrl: './login.html'
+            })
+            .when('/list', {
+              controller:  'ListController',
+              templateUrl: './list.html',
+              resolve: {
+                  permission: function(authorizationService) {
+                    return authorizationService.permissionCheck([0]);
+                  }
+              }
+            })
+            .when('/view/:id', {
+              controller:  'DetailController',
+              templateUrl: './detail.html'
+            })
+            .when('/SomeAngularRouteForUnauthorizedAccess', {
+              templateUrl: './403.html'
+            })
+            .otherwise({
+              redirectTo:  '/'
+            });
+        };
+
+        app.config(demoRouteConfig);
+
+        app.controller('LoginController', function ($scope, $http, $location) {
+            $scope.submit = function () {
+                login($scope.username, $scope.password);
+            };
+
+            function login(username, password) {
+                $http({
+                    url: 'http://127.0.0.1:8080/sys/login',
+                    method: 'post',
+                    data: 'username=' + username + '&password=' + password,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function(res) {
+                  if (res.data == 'success') {
+                    $location.path('/list');
+                  }
+                }).error(function(res) {
+                  alert('失败');
+                });
+            };
+        });
+
+        app.controller('DetailController', function($scope, $http, $routeParams) {
+          $http.get('http://127.0.0.1:8080/user/detail/' + $routeParams.id).success(function(res) {
+            $scope.student = res;
+          }).error(function(res) {
+            alert('失败');
+          });
+        });
+
+        app.controller('ListController', function($scope, $http) {
+          $http.get('http://127.0.0.1:8080/user/list').success(function(res) {
+            $scope.studentList = res;
+          }).error(function(res) {
+            alert('失败')
+          });
+        });
+    </script>
+</head>
+<body style="padding: 20px;">
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-view>
+
+  </div>
+</body>
+</html>

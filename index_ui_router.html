@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DemoApp" id="demoApp">
+<head>
+    <title ng-bind="$state.current.data.pageTitle"></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+
+    <!-- JQuery Script -->
+    <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+
+    <!-- Angular Script -->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="js/ocLazyLoad.min.js"></script>
+    <script type="text/javascript" src='js/custom/main_ui_router.js'></script>
+
+    <link id="ng_load_plugins_before" />
+</head>
+<body style="padding: 20px;">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ui-view>
+
+  </div>
+</body>
+</html>

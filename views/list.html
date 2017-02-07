@@ -1,0 +1,14 @@
+<table class="table">
+  <tr>
+    <th>学号</th>
+    <th>姓名</th>
+    <th>性别</th>
+    <th>年龄</th>
+  </tr>
+  <tr ng-repeat="student in studentList">
+    <td>{{student.id}}</td>
+    <td><a href="#/view/{{student.id}}">{{student.name}}</a></td>
+    <td>{{student.sex}}</td>
+    <td>{{student.age}}</td>
+  </tr>
+</table>
