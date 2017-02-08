@@ -104,13 +104,10 @@ app.controller('DetailController', function($rootScope, $scope, $http, $statePar
 
 app.controller('ListController', function($rootScope, $scope, $http) {
   $scope.$on('$viewContentLoaded', function() {
-    // $http.get($rootScope.settings.serverUrl + '/user/list').success(function(res) {
-    //   $scope.studentList = res;
-    // }).error(function(res) {
-    //   alert('失败')
-    // });
+
   })
 });
+
 
 /* Init global settings and run the app */
 app.run(["$rootScope", "settings", "$state", "$log", function($rootScope, settings, $state, $log) {
